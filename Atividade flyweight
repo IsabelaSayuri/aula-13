@@ -1,0 +1,44 @@
+#Sistema que usa flyweight
+
+class Veiculo:
+    def __init__(self, marca, modelo, cor):
+        self.marca = marca
+        self.modelo = modelo
+        self.cor = cor
+
+    def exibir(self, placa, vaga):
+        print(f"Veículo: {self.marca} {self.modelo} ({self.cor})  Placa: {placa}  Vaga: {vaga}")
+
+#Cria fábrica veículo
+class FabricaVeiculo:
+    _veiculos = {}
+
+    @classmethod
+    def get_veiculo(cls, marca, modelo, cor):
+        chave = (marca, modelo, cor)
+        
+        if chave not in cls._veiculos:
+            print(f"- Criando objeto Flyweight: {marca} {modelo} {cor} -")
+            cls._veiculos[chave] = Veiculo(marca, modelo, cor)
+        
+        return cls._veiculos[chave]
+
+# Instanciando a fábrica
+fabrica = FabricaVeiculo()
+
+# Criando os respectivos veículos
+v1 = fabrica.get_veiculo("Uno", "Corolla", "Azul")
+v2 = fabrica.get_veiculo("Toyota", "Renault", "Bege") 
+v3 = fabrica.get_veiculo("Honda", "Civic", "Preto")
+v4 = fabrica.get_veiculo("Volkswagen", "Gol", "Branco")
+v5 = fabrica.get_veiculo("Honda", "Civic", "Preto") # Compartilhado
+
+print("\n- Exibindo Dados no Terminal -")
+v1.exibir("ABC1234", 10)
+v2.exibir("XYZ9876", 28)
+v3.exibir("AAA1111", 32)
+v4.exibir("BBB2222", 45)
+v5.exibir("CCC3333", 50)
+
+# Verificação
+print(f"\nTotal de objetos Flyweight criados: {len(fabrica._veiculos)}")
